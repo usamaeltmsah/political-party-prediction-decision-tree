@@ -39,6 +39,24 @@ def make_header(elections_data):
     return header
 
 
+# Get the probability of a value in a given column.
+# x: is the value that I want calculate the probability for.
+def probability(elections_data, x, col_ind):
+    # Get all the data of column which its index is col_ind.
+    col_data = [row[col_ind] for row in elections_data]
+    times = col_data.count(x)
+    return times / len(col_data)
+
+
+# Calculate the entropy to be used in selecting Attribute based
+# Entropy(S) = -p(positive)log2 p(positive) — p(negative)log2 p(negative)
+def entropy(elections_data, x, col_ind):
+    p_postv = probability(elections_data, x, col_ind)
+    p_negtv = 1 - p_postv
+    S = -p_postv * math.log2(p_postv) - p_negtv * math.log2(p_negtv)
+    return S
+
+
 # Get the Unique values for each column, from its index in the data.
 def unique_values(elections_data, col):
     return set(row[col] for row in elections_data)
